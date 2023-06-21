@@ -2,6 +2,7 @@ package relay
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -32,6 +33,10 @@ func (pr *Prover) syncUpstreamHeader(includeState bool) ([]*elc.MsgUpdateClientR
 	if err := pr.codec.UnpackAny(res.ClientState, &clientState); err != nil {
 		return nil, err
 	}
+	fmt.Printf("chainID: %v\n", pr.originChain.ChainID())
+	fmt.Println("if clientState.GetLatestHeight().GTE(latestHeader.GetHeight()) {")
+	fmt.Printf("clientState.GetLatestHeight(): %+v\n", clientState.GetLatestHeight())
+	fmt.Printf("latestHeader.GetHeight(): %+v\n", latestHeader.GetHeight())
 	if clientState.GetLatestHeight().GTE(latestHeader.GetHeight()) {
 		return nil, nil
 	}
